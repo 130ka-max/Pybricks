@@ -27,6 +27,21 @@ left  = Motor(Port.F, positive_direction=Direction.COUNTERCLOCKWISE)
 right = Motor(Port.B, positive_direction=Direction.CLOCKWISE)
 
 
+# ロボットパラメータ（実測に合わせると直進精度↑）
+robot = DriveBase(left, right, wheel_diameter=62.4, axle_track=115)
+
+# ───────────────────────────────────────────
+# 3) ジャイロ PID を有効化し、速度と距離を指定
+# ───────────────────────────────────────────
+robot.use_gyro(True)          # ジャイロで姿勢自動補正
+hub.imu.reset_heading(0)      # ヘディングを 0°
+robot.reset()                 # 走行距離を 0 mm
+
+robot.settings(straight_speed=150)  # ≒30 %パワー（150 mm/s）
+robot.straight(500)                 # 500 mm 前進
+robot.stop(Stop.HOLD)               # 到達後に姿勢を保持
+
+
 """
 ポイントのおさらい
 
@@ -62,16 +77,3 @@ https://chatgpt.com/c/68354691-4b74-8005-99d4-8456a6a34952?src=history_search
 
 """
 
-# ロボットパラメータ（実測に合わせると直進精度↑）
-robot = DriveBase(left, right, wheel_diameter=62.4, axle_track=115)
-
-# ───────────────────────────────────────────
-# 3) ジャイロ PID を有効化し、速度と距離を指定
-# ───────────────────────────────────────────
-robot.use_gyro(True)          # ジャイロで姿勢自動補正
-hub.imu.reset_heading(0)      # ヘディングを 0°
-robot.reset()                 # 走行距離を 0 mm
-
-robot.settings(straight_speed=150)  # ≒30 %パワー（150 mm/s）
-robot.straight(500)                 # 500 mm 前進
-robot.stop(Stop.HOLD)               # 到達後に姿勢を保持
